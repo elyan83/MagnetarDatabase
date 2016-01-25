@@ -1,0 +1,51 @@
+Sol  MASS(spline) = 0.986707  MV = 4.85  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |5639|  Age (Mesa) = |1.0599e+09|  Bestj(Raw) = 32
+Sirius  MASS(spline) = 2.38616  MV = 1.4544  Bestk(Model) = 11  Bestk Model  = STAR_1.9  Teff (Mesa) = |8468|  Age (Mesa) = |2.4231e+08|  Bestj(Raw) = 33
+Betelgeuse  MASS(spline) = 34.092  MV = -5.13738  Bestk(Model) = 10  Bestk Model  = STAR_1.6  Teff (Mesa) = |3394.93|  Age (Mesa) = |2.4054e+09|  Bestj(Raw) = 302
+Rigel Kentaurus B  MASS(spline) = 0.763983  MV = 5.70237  Bestk(Model) = 6  Bestk Model  = STAR_0.8  Teff (Mesa) = |4862.54|  Age (Mesa) = |3.8079e+09|  Bestj(Raw) = 32
+Rigel Kentaurus A  MASS(spline) = 1.10161  MV = 4.34237  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |5764.53|  Age (Mesa) = |5.8782e+09|  Bestj(Raw) = 34
+Rigel  MASS(spline) = 50.3651  MV = -6.69344  Bestk(Model) = 9  Bestk Model  = STAR_1.4  Teff (Mesa) = |63760|  Age (Mesa) = |3.7448e+09|  Bestj(Raw) = 401
+Altair  MASS(spline) = 1.81818  MV = 2.20393  Bestk(Model) = 10  Bestk Model  = STAR_1.6  Teff (Mesa) = |6794.59|  Age (Mesa) = |1.7763e+09|  Bestj(Raw) = 36
+Vega  MASS(spline) = 3.58073  MV = 0.58177  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Deneb  MASS(spline) = 243.813  MV = -8.72839  Bestk(Model) = 8  Bestk Model  = STAR_1.2  Teff (Mesa) = |66430|  Age (Mesa) = |6.4091e+09|  Bestj(Raw) = 331
+Castor  MASS(spline) = 3.57328  MV = 0.585989  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Pollux  MASS(spline) = 2.78231  MV = 1.08803  Bestk(Model) = 8  Bestk Model  = STAR_1.2  Teff (Mesa) = |4717.46|  Age (Mesa) = |6.1565e+09|  Bestj(Raw) = 43
+Mizar  MASS(spline) = 3.98218  MV = 0.332242  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Arcturus  MASS(spline) = 3.88599  MV = -0.306713  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |4311.56|  Age (Mesa) = |1.2258e+10|  Bestj(Raw) = 46
+Alderamin  MASS(spline) = 2.27924  MV = 1.57518  Bestk(Model) = 11  Bestk Model  = STAR_1.9  Teff (Mesa) = |7706.18|  Age (Mesa) = |7.4243e+08|  Bestj(Raw) = 34
+Barnard's Star  MASS(spline) = 0.229461  MV = 13.2379  Bestk(Model) = 9  Bestk Model  = STAR_1.4  Teff (Mesa) = |3680.59|  Age (Mesa) = |1.3386e+10|  Bestj(Raw) = 420
+Aldebaran  MASS(spline) = 3.3278  MV = -0.631245  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |4197.79|  Age (Mesa) = |1.2271e+10|  Bestj(Raw) = 49
+Antares  MASS(spline) = 35.991  MV = -5.27803  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |3281.96|  Age (Mesa) = |1.23e+10|  Bestj(Raw) = 126
+Sol  MASS(spline) = 0.986707  MV = 4.85  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |5639|  Age (Mesa) = |1.0599e+09|  Bestj(Raw) = 32
+Sirius  MASS(spline) = 2.38616  MV = 1.4544  Bestk(Model) = 11  Bestk Model  = STAR_1.9  Teff (Mesa) = |8468|  Age (Mesa) = |2.4231e+08|  Bestj(Raw) = 33
+Betelgeuse  MASS(spline) = 34.092  MV = -5.13738  Bestk(Model) = 10  Bestk Model  = STAR_1.6  Teff (Mesa) = |3394.93|  Age (Mesa) = |2.4054e+09|  Bestj(Raw) = 302
+Rigel Kentaurus B  MASS(spline) = 0.763983  MV = 5.70237  Bestk(Model) = 6  Bestk Model  = STAR_0.8  Teff (Mesa) = |4862.54|  Age (Mesa) = |3.8079e+09|  Bestj(Raw) = 32
+Rigel Kentaurus A  MASS(spline) = 1.10161  MV = 4.34237  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |5764.53|  Age (Mesa) = |5.8782e+09|  Bestj(Raw) = 34
+Rigel  MASS(spline) = 50.3651  MV = -6.69344  Bestk(Model) = 9  Bestk Model  = STAR_1.4  Teff (Mesa) = |63760|  Age (Mesa) = |3.7448e+09|  Bestj(Raw) = 401
+Altair  MASS(spline) = 1.81818  MV = 2.20393  Bestk(Model) = 10  Bestk Model  = STAR_1.6  Teff (Mesa) = |6794.59|  Age (Mesa) = |1.7763e+09|  Bestj(Raw) = 36
+Vega  MASS(spline) = 3.58073  MV = 0.58177  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Deneb  MASS(spline) = 243.813  MV = -8.72839  Bestk(Model) = 8  Bestk Model  = STAR_1.2  Teff (Mesa) = |66430|  Age (Mesa) = |6.4091e+09|  Bestj(Raw) = 331
+Castor  MASS(spline) = 3.57328  MV = 0.585989  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Pollux  MASS(spline) = 2.78231  MV = 1.08803  Bestk(Model) = 8  Bestk Model  = STAR_1.2  Teff (Mesa) = |4717.46|  Age (Mesa) = |6.1565e+09|  Bestj(Raw) = 43
+Mizar  MASS(spline) = 3.98218  MV = 0.332242  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Arcturus  MASS(spline) = 3.88599  MV = -0.306713  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |4311.56|  Age (Mesa) = |1.2258e+10|  Bestj(Raw) = 46
+Alderamin  MASS(spline) = 2.27924  MV = 1.57518  Bestk(Model) = 11  Bestk Model  = STAR_1.9  Teff (Mesa) = |7706.18|  Age (Mesa) = |7.4243e+08|  Bestj(Raw) = 34
+Barnard's Star  MASS(spline) = 0.229461  MV = 13.2379  Bestk(Model) = 9  Bestk Model  = STAR_1.4  Teff (Mesa) = |3680.59|  Age (Mesa) = |1.3386e+10|  Bestj(Raw) = 420
+Aldebaran  MASS(spline) = 3.3278  MV = -0.631245  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |4197.79|  Age (Mesa) = |1.2271e+10|  Bestj(Raw) = 49
+Antares  MASS(spline) = 35.991  MV = -5.27803  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |3281.96|  Age (Mesa) = |1.23e+10|  Bestj(Raw) = 126
+Sol  MASS(spline) = 0.986707  MV = 4.85  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |5639|  Age (Mesa) = |1.0599e+09|  Bestj(Raw) = 32
+Sirius  MASS(spline) = 2.38616  MV = 1.4544  Bestk(Model) = 11  Bestk Model  = STAR_1.9  Teff (Mesa) = |8468|  Age (Mesa) = |2.4231e+08|  Bestj(Raw) = 33
+Betelgeuse  MASS(spline) = 34.092  MV = -5.13738  Bestk(Model) = 10  Bestk Model  = STAR_1.6  Teff (Mesa) = |3394.93|  Age (Mesa) = |2.4054e+09|  Bestj(Raw) = 302
+Rigel Kentaurus B  MASS(spline) = 0.763983  MV = 5.70237  Bestk(Model) = 6  Bestk Model  = STAR_0.8  Teff (Mesa) = |4862.54|  Age (Mesa) = |3.8079e+09|  Bestj(Raw) = 32
+Rigel Kentaurus A  MASS(spline) = 1.10161  MV = 4.34237  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |5764.53|  Age (Mesa) = |5.8782e+09|  Bestj(Raw) = 34
+Rigel  MASS(spline) = 50.3651  MV = -6.69344  Bestk(Model) = 9  Bestk Model  = STAR_1.4  Teff (Mesa) = |63760|  Age (Mesa) = |3.7448e+09|  Bestj(Raw) = 401
+Altair  MASS(spline) = 1.81818  MV = 2.20393  Bestk(Model) = 10  Bestk Model  = STAR_1.6  Teff (Mesa) = |6794.59|  Age (Mesa) = |1.7763e+09|  Bestj(Raw) = 36
+Vega  MASS(spline) = 3.58073  MV = 0.58177  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Deneb  MASS(spline) = 243.813  MV = -8.72839  Bestk(Model) = 8  Bestk Model  = STAR_1.2  Teff (Mesa) = |66430|  Age (Mesa) = |6.4091e+09|  Bestj(Raw) = 331
+Castor  MASS(spline) = 3.57328  MV = 0.585989  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Pollux  MASS(spline) = 2.78231  MV = 1.08803  Bestk(Model) = 8  Bestk Model  = STAR_1.2  Teff (Mesa) = |4717.46|  Age (Mesa) = |6.1565e+09|  Bestj(Raw) = 43
+Mizar  MASS(spline) = 3.98218  MV = 0.332242  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |42530|  Age (Mesa) = |1.2431e+10|  Bestj(Raw) = 341
+Arcturus  MASS(spline) = 3.88599  MV = -0.306713  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |4311.56|  Age (Mesa) = |1.2258e+10|  Bestj(Raw) = 46
+Alderamin  MASS(spline) = 2.27924  MV = 1.57518  Bestk(Model) = 11  Bestk Model  = STAR_1.9  Teff (Mesa) = |7706.18|  Age (Mesa) = |7.4243e+08|  Bestj(Raw) = 34
+Barnard's Star  MASS(spline) = 0.229461  MV = 13.2379  Bestk(Model) = 9  Bestk Model  = STAR_1.4  Teff (Mesa) = |3680.59|  Age (Mesa) = |1.3386e+10|  Bestj(Raw) = 420
+Aldebaran  MASS(spline) = 3.3278  MV = -0.631245  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |4197.79|  Age (Mesa) = |1.2271e+10|  Bestj(Raw) = 49
+Antares  MASS(spline) = 35.991  MV = -5.27803  Bestk(Model) = 12  Bestk Model  = STAR_1  Teff (Mesa) = |3281.96|  Age (Mesa) = |1.23e+10|  Bestj(Raw) = 126
