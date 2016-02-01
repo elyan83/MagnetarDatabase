@@ -71,7 +71,8 @@ double *data[5]; //double *data[NSTARMODELS][NCOLUMNS][Insert with Time] allocar
 //and fill with for (i=0;i<NSTAR;i++) data[i]=loadfile(…)
 //nines = loadfile("",data[i]); data[i][5] = (double *) malloc(nlines*sizeof(double));
 
-unsigned int col[]={1,2,34,35,40,41}; //Evolution Parameter of the STAR in function of time history.data
+//unsigned int col[]={1,2,34,35,40,41}; //Evolution Parameter of the STAR in function of time history.data
+unsigned int col[]={1,2,34}; //Evolution Parameter of the STAR in function of time history.data
 
 static int  nlines;
 static int nModels = 34; // Total numbers of models
@@ -97,7 +98,7 @@ int minrow;
 unsigned int
 loadfilestr_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], char **data[], const char *fs) {
 	unsigned int i, j, ialloc;
-	char buffer[4192];
+	char buffer[MAXLINESIZE];
 	char **ap, *argv[MAXCOLUMNS], *inputstring;
 	
 	for (j=0;j<ncolumns;j++) {
@@ -106,7 +107,7 @@ loadfilestr_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], 
 	ialloc=512;
 	
 	i=0;
-	while (fgets(buffer,4191,in)) {
+	while (fgets(buffer,MAXLINESIZE-1,in)) {
 		if (buffer[0]!='#') {
 			inputstring=buffer;
 			/* break line into up to MAXCOLUMNS columns */
@@ -175,7 +176,7 @@ loadfilestr(const char *filename, unsigned int ncolumns, unsigned int columns[],
 unsigned int
 loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], double *data[], const char *fs) {
 	unsigned int i, j, ialloc;
-	char buffer[4192];
+	char buffer[MAXLINESIZE];
 	char **ap, *argv[MAXCOLUMNS], *inputstring;
 	
 	for (j=0;j<ncolumns;j++) {
@@ -184,7 +185,7 @@ loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], dou
 	ialloc=512;
 	
 	i=0;
-	while (fgets(buffer,4191,in)) {
+	while (fgets(buffer,MAXLINESIZE-1,in)) {
 		if (buffer[0]!='#') {
 			inputstring=buffer;
 			/* break line into up to MAXCOLUMNS columns */
@@ -309,7 +310,7 @@ void add_next_level
 		num_comp_no_link_this_level = n_lines;
     else if  ( level_type[level] == SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION )
 	/* one table each for mass, radius,temperature, Color Index (B_V) and Absolute Magnitude (V_M) */
-		num_comp_no_link_this_level = 5; 
+		num_comp_no_link_this_level = 2;
 	else if ( level_type[level] == SE_CLS_DRM_PROPERTY_VALUE)
 		num_comp_no_link_this_level = n_lines; //number of property values = nlines in file
 	else  num_comp_no_link_this_level = 1;
@@ -319,6 +320,10 @@ void add_next_level
         seObject new_obj;
 		
         transmittal.createObject(new_obj, level_type[level]);
+        
+        if (level_type[level] == SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION){
+            printf("%d\n",i);
+        }
 		
 		
         if ( level_type[level] == SE_CLS_DRM_MODEL )
@@ -410,12 +415,15 @@ void add_next_level
 			seDRMTablePropertyDescription propDescObj(new_obj);
 			SE_Element_Type elemType;
 			elemType.code_type = SE_ELEMTYPCOD_ATTRIBUTE;
+            
 			if (i==0) {
 				elemType.code.attribute = EAC_MASS; //Solar Mass to be defined
 			}
+            
 			if (i==1) {
 				elemType.code.attribute = EAC_TEMPERATURE;
 			}
+            /*
 			if (i==2) {
 				elemType.code.attribute = EAC_POWER; // Solar Luminosity to be defined
 			}
@@ -424,7 +432,7 @@ void add_next_level
 			}
 			if (i==4) {
 				elemType.code.attribute = EAC_PRESSURE;// To Be Defined as EAC_MAGNITUDE
-			}
+			}*/
             
             //if (i==5) {
 				//elemType.code.attribute = EAC_OBJECT_ASPECT;// To Be Defined as EAC_MAGNITUDE
@@ -439,11 +447,14 @@ void add_next_level
 			if (i==0) {
 				propDescObj.set_value_unit(EUC_KILOGRAM);
 				propDescObj.set_value_scale(ESC_YOTTA);//e24
-			} 
-			else if (i==1) {
+			}
+            
+			if (i==1) {
 				propDescObj.set_value_unit(EUC_KELVIN);
 				propDescObj.set_value_scale(ESC_KILO);//e3
-			}	
+                
+			}
+            /*
 			else if (i==2){
 				propDescObj.set_value_unit(EUC_WATT);
 				propDescObj.set_value_scale(ESC_YOTTA);//e24
@@ -458,7 +469,7 @@ void add_next_level
                 propDescObj.set_value_unit(EUC_PASCAL);
 				propDescObj.set_value_scale(ESC_UNI);//e9
 
-			}
+			}*/
             
             //else{
 			//	propDescObj.set_value_unit(EUC_UNITLESS);//Absolute Magnitude
@@ -468,6 +479,8 @@ void add_next_level
 			propDescObj.set_value_type(SE_DTDATAVALTYP_SINGLE_INTEGER);
 
 		}
+            
+        
 		
 		if ( level_type[level] == SE_CLS_DRM_PROPERTY_VALUE) 
 		{
@@ -492,12 +505,14 @@ void add_next_level
 				av.value.real_value.value.single_value = fill_data[1][i]*SM*1e-24;//YOTTA Kg
 				
 			}
-			else if (propdescription_i==1) {  // table of temperature
+            
+			if (propdescription_i==1) {  // table of temperature
                 av.value.real_value.unit = EUC_KELVIN;
 				av.value.real_value.unit_scale = ESC_KILO;//e3
 				av.value.real_value.value.single_value = pow(10,fill_data[2][i])*1e-03; //Kilo Kelvin
 				
 			}
+            /*
 			else if (propdescription_i==2) {  // table of temperature
                 av.value.real_value.unit = EUC_WATT;
 				av.value.real_value.unit_scale = ESC_YOTTA;//e24
@@ -519,7 +534,8 @@ void add_next_level
 				//av.value.real_value.unit = EUC_UNITLESS;
 				//av.value.real_value.unit_scale = ESC_UNI;
 				//av.value.real_value.value.single_value = fill_data[5][i];
-			//}
+			//}*/
+             
 			pv.set_value(av);
 		}
 		
@@ -904,7 +920,8 @@ int main( int argc, char **argv )
         
         file_name = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/history.data";
         
-        nmesa_data[k]=loadfile(file_name,5,col,mesa_data[k]);  //return the lines number of the raw in each column
+        //nmesa_data[k]=loadfile(file_name,5,col,mesa_data[k]);  //return the lines number of the raw in each column
+        nmesa_data[k]=loadfile(file_name,3,col,mesa_data[k]);  //return the lines number of the raw in each column
         printf("Number of Raws = %d\n",nmesa_data[k]);
         
         printf("second column first row \n");
