@@ -54,7 +54,7 @@
 //added for loadfile function
 #define ALLOCBLOCK 512
 #define MAXCOLUMNS 100
-#define MAXLINESIZE 4192
+#define MAXLINESIZE 5192
 const char * const LOADFILE_FS=" \t";
 
 using namespace sedris;
@@ -71,8 +71,9 @@ double *data[5]; //double *data[NSTARMODELS][NCOLUMNS][Insert with Time] allocar
 //and fill with for (i=0;i<NSTAR;i++) data[i]=loadfile(…)
 //nines = loadfile("",data[i]); data[i][5] = (double *) malloc(nlines*sizeof(double));
 
-//unsigned int col[]={1,2,34,35,40,41}; //Evolution Parameter of the STAR in function of time history.data
-unsigned int col[]={1,2,34}; //Evolution Parameter of the STAR in function of time history.data
+unsigned int col[]={1,2,34,35,40,41}; //Evolution Parameter of the STAR in function of time history.data
+unsigned int col2[]={1,3,4,5,6,18,22,23,24,25}; //Evolution Parameter of the STAR in function of the header of the Profile100.data
+unsigned int col3[]={1,3,6,26,29,36,62,67,71,72,73,74,75}; //Evolution Parameter of the STAR in function of time history.data
 
 static int  nlines;
 static int nModels = 34; // Total numbers of models
@@ -283,7 +284,13 @@ void add_next_level
  int level,
  int loc_index,
  int n_lines,
+ int n_lines2,
+ int n_lines3,
+ //double *fill_data[6],
+ //unsigned int num_lines[3],
  double *fill_data[6],
+ double *fill_data2[10],
+ double *fill_data3[13],
  char Model_name[100]
  )
 {
@@ -291,6 +298,7 @@ void add_next_level
 	/* so the lower levels can use this information to complete their property values */
 	static int model_i, propdescription_i;
 	int num_comp_no_link_this_level;
+    
 	seDRMPropertyTable ptObj;
 	SE_DRM_Class level_type[] =
     {
@@ -301,7 +309,11 @@ void add_next_level
 		SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION,
 		SE_CLS_DRM_PROPERTY_VALUE
     };
+    
+    printf("%f\n",fill_data[1][0]);
 	
+    //n_lines = num_lines[0];
+    
     if ( level >= (sizeof(level_type)/sizeof(SE_DRM_Class)) )
         return;
     else if ( level == 0 )
@@ -310,7 +322,7 @@ void add_next_level
 		num_comp_no_link_this_level = n_lines;
     else if  ( level_type[level] == SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION )
 	/* one table each for mass, radius,temperature, Color Index (B_V) and Absolute Magnitude (V_M) */
-		num_comp_no_link_this_level = 2;
+		num_comp_no_link_this_level = 5;
 	else if ( level_type[level] == SE_CLS_DRM_PROPERTY_VALUE)
 		num_comp_no_link_this_level = n_lines; //number of property values = nlines in file
 	else  num_comp_no_link_this_level = 1;
@@ -423,16 +435,17 @@ void add_next_level
 			if (i==1) {
 				elemType.code.attribute = EAC_TEMPERATURE;
 			}
-            /*
+            
 			if (i==2) {
-				elemType.code.attribute = EAC_POWER; // Solar Luminosity to be defined
+				elemType.code.attribute = EAC_POWER_GENERATION_RATE; // Solar Luminosity to be defined -> EAC_POWER Is not there
 			}
+            
 			if (i==3) {
-				elemType.code.attribute = EAC_VOLUMIC_MASS; //Density
+				elemType.code.attribute = EAC_AIR_DENSITY; //Density -> EAC_VOLUMIC_MASS is not there
 			}
 			if (i==4) {
-				elemType.code.attribute = EAC_PRESSURE;// To Be Defined as EAC_MAGNITUDE
-			}*/
+				elemType.code.attribute = EAC_PRESSURE_ALTIMETER_SETTING;// Pressure -> EAC_PRESSURE is not there
+			}
             
             //if (i==5) {
 				//elemType.code.attribute = EAC_OBJECT_ASPECT;// To Be Defined as EAC_MAGNITUDE
@@ -454,22 +467,22 @@ void add_next_level
 				propDescObj.set_value_scale(ESC_KILO);//e3
                 
 			}
-            /*
-			else if (i==2){
+            
+			if (i==2){
 				propDescObj.set_value_unit(EUC_WATT);
 				propDescObj.set_value_scale(ESC_YOTTA);//e24
 			}
-			else if (i==3){
+			if (i==3){
 		
-				propDescObj.set_value_unit(EUC_GR_PER_CUBIC_CM); // Density
+				propDescObj.set_value_unit(EUC_GRAM_PER_CUBIC_CM); // Density
 				propDescObj.set_value_scale(ESC_MEGA);//
 			}
 			
-			else {
+			if(i==4){
                 propDescObj.set_value_unit(EUC_PASCAL);
 				propDescObj.set_value_scale(ESC_UNI);//e9
 
-			}*/
+			}
             
             //else{
 			//	propDescObj.set_value_unit(EUC_UNITLESS);//Absolute Magnitude
@@ -512,19 +525,19 @@ void add_next_level
 				av.value.real_value.value.single_value = pow(10,fill_data[2][i])*1e-03; //Kilo Kelvin
 				
 			}
-            /*
-			else if (propdescription_i==2) {  // table of temperature
+            
+			if (propdescription_i==2) {  // table of Luminosity
                 av.value.real_value.unit = EUC_WATT;
 				av.value.real_value.unit_scale = ESC_YOTTA;//e24
 				av.value.real_value.value.single_value = fill_data[3][i]*SL*1e-24;// Yotta Watt
 				
 			}
-			else if (propdescription_i==3) {  // table of Density in the Center
+			if (propdescription_i==3) {  // table of Density in the Center
 				av.value.real_value.unit = EUC_GRAM_PER_CUBIC_CM;
 				av.value.real_value.unit_scale = ESC_MEGA;
 				av.value.real_value.value.single_value = pow(10,fill_data[4][i])*1e-06*SD; // Mega gr/cm3
 			}
-			else if (propdescription_i==4) {  // table of Pressure in the Center
+			if (propdescription_i==4) {  // table of Pressure in the Center
 				av.value.real_value.unit = EUC_PASCAL;
 				av.value.real_value.unit_scale = ESC_UNI;
 				av.value.real_value.value.single_value = fill_data[5][i];
@@ -541,7 +554,7 @@ void add_next_level
 		
         parent.addComponent(new_obj);
 		
-        add_next_level(transmittal, new_obj, level+1, i, n_lines, fill_data, Model_name);
+        add_next_level(transmittal, new_obj, level+1, i, n_lines,n_lines2,n_lines3,fill_data,fill_data2,fill_data3, Model_name);
 		
 		if (level==0) {
 			/*Free memory for Evolution Parameter*/ 
@@ -901,31 +914,59 @@ int main( int argc, char **argv )
     /*Load  MESA models*/
 		
         char *file_name, argom[200];
+        char *file_name2, argom2[200];
+        char *file_name3, argom3[200];
         char write_filename[200];
 		unsigned int nmesa_data[nModels];
+        unsigned int nProfHead_data[nModels];
+		
         unsigned int startmesa_data[nModels];
         
-        static const int MESA_Teff=0;
-        static const int MESA_MASS=1;
-        static const int MESA_RADIUS=2;
-        static const int MESA_TIME=3; //Age
-        static const int MESA_LogL=4;
-        static const int MESA_L=4;
 
         
 		double *mesa_data[nModels][7];
+        double *ProfHead_data[nModels][10];
         int num,h;
         FILE *f_plot;
         int k=0;
         
         file_name = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/history.data";
+        file_name2 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profileHeader100.data";
+        file_name3 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profile100.data";
+       
         
-        //nmesa_data[k]=loadfile(file_name,5,col,mesa_data[k]);  //return the lines number of the raw in each column
-        nmesa_data[k]=loadfile(file_name,3,col,mesa_data[k]);  //return the lines number of the raw in each column
-        printf("Number of Raws = %d\n",nmesa_data[k]);
         
-        printf("second column first row \n");
-        printf("%f\n",mesa_data[k][1][0]);
+        for (k=0;k<=2;k++) {
+            
+            if (k==0){
+                printf("%d\n",k);
+                nmesa_data[k]=loadfile(file_name,6,col,mesa_data[k]);  //return the lines number of the raw in each column
+                printf("Number of Raws = %d\n",nmesa_data[k]);
+                printf("second column first row \n");
+                printf("%f\n",mesa_data[0][1][0]);
+            }
+            if (k==1){
+                printf("%d\n",k);
+                nmesa_data[k]=loadfile(file_name2,10,col2,mesa_data[k]);  //return the lines number of the raw in each column
+                printf("Second File \n");
+                printf("Number of Raws = %d\n",nmesa_data[k]);
+                printf("second column first row \n");
+                printf("%f\n",mesa_data[1][4][0]);
+                
+            }
+            
+            if (k==2){
+                printf("%d\n",k);
+                nmesa_data[k]=loadfile(file_name3,13,col3,mesa_data[k]);  //return the lines number of the raw in each column
+                printf("Third File \n");
+                printf("Number of Raws = %d\n",nmesa_data[k]);
+                printf("second column first row \n");
+                printf("%f\n",mesa_data[2][12][0]);
+                
+            }
+        }
+   
+        
         
         //Associate the SEDRIS ATTRIBUTE TO THE MESA FILE FIRST
         
@@ -935,10 +976,11 @@ int main( int argc, char **argv )
         
         //LogL_Lsun = mesa_data[k][MESA_LogL]; // Luminosity
         
-        
         /*Add MESA models in Model Library*/
-    
-        add_next_level(transmittal, my_mlib, 0, 0, nmesa_data[k],mesa_data[k],"Trial");
+        
+        add_next_level(transmittal, my_mlib, 0, 0, nmesa_data[0],nmesa_data[1],nmesa_data[2],mesa_data[0],mesa_data[1],mesa_data[2],"Model1");
+        
+       
 		
 		
 		
