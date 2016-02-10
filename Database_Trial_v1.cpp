@@ -109,8 +109,9 @@ loadfilestr_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], 
 	
 	i=0;
 	while (fgets(buffer,MAXLINESIZE-1,in)) {
-		if (buffer[0]!='#') {
+		if (buffer[0]!='#'){
 			inputstring=buffer;
+            
 			/* break line into up to MAXCOLUMNS columns */
 			for (ap = argv; (*ap = strsep(&inputstring, fs)) != NULL;)
 				if (**ap != '\0')
@@ -175,7 +176,7 @@ loadfilestr(const char *filename, unsigned int ncolumns, unsigned int columns[],
 //loadfile code
 
 unsigned int
-loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], double *data[], const char *fs) {
+loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], double *data[], const char *fs, int skipFirstRow) {
 	unsigned int i, j, ialloc;
 	char buffer[MAXLINESIZE];
 	char **ap, *argv[MAXCOLUMNS], *inputstring;
@@ -187,8 +188,11 @@ loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], dou
 	
 	i=0;
 	while (fgets(buffer,MAXLINESIZE-1,in)) {
+        
+        
 		if (buffer[0]!='#') {
 			inputstring=buffer;
+            
 			/* break line into up to MAXCOLUMNS columns */
 			for (ap = argv; (*ap = strsep(&inputstring, fs)) != NULL;)
 				if (**ap != '\0')
@@ -198,7 +202,14 @@ loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], dou
 			if (ap>argv) {
 				/* assign columns to the data arrays; missing values given nan */
 				for (j=0;j<ncolumns;j++) {
-					data[j][i]=(argv+columns[j]<=ap ? atof(argv[columns[j]-1]) : 0.0/0.0);
+                    if (skipFirstRow == 0){
+                        data[j][i]=(argv+columns[j]<=ap ? atof(argv[columns[j]-1]) : 0.0/0.0);
+                    }
+                    if(skipFirstRow == 1 and i > 1){
+                        data[j][i]=(argv+columns[j]<=ap ? atof(argv[columns[j]-1]) : 0.0/0.0);
+                        //printf("%f \n",data[j][i]);
+                        
+                    }
 				}
 				i++;
 				/* do we need to allocate more memory? */
@@ -210,6 +221,8 @@ loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], dou
 				}
 			}
 		}
+        
+        
 	}
 	/* free excess memory */
 	for (j=0;j<ncolumns;j++) {
@@ -221,26 +234,31 @@ loadfile_fileptr_fs(FILE *in, unsigned int ncolumns, unsigned int columns[], dou
 }
  
 unsigned int
-loadfile_fs(const char *filename, unsigned int ncolumns, unsigned int columns[], double *data[], const char *fs) {
+loadfile_fs(const char *filename, unsigned int ncolumns, unsigned int columns[], double *data[], const char *fs,int skipFirstRow) {
 	FILE *in;
 	unsigned int retval;
 	
+    
 	assert((in=fopen(filename,"r"))!=NULL);
 	
-	retval=loadfile_fileptr_fs(in, ncolumns, columns, data, fs);
+	retval=loadfile_fileptr_fs(in, ncolumns, columns, data, fs, skipFirstRow);
+    
 	fclose(in);
+    
 	return retval;
 }
 
 unsigned int
-loadfile_fileptr(FILE *in, unsigned int ncolumns, unsigned int columns[], double *data[]) {
-	return loadfile_fileptr_fs(in,ncolumns,columns,data,LOADFILE_FS);
+loadfile_fileptr(FILE *in, unsigned int ncolumns, unsigned int columns[], double *data[], int skipFirstRow) {
+    
+
+	return loadfile_fileptr_fs(in,ncolumns,columns,data,LOADFILE_FS,skipFirstRow);
 }
 
 unsigned int
-loadfile(const char *filename, unsigned int ncolumns, unsigned int columns[], double *data[]) {
-  //  printf("%s\n",filename);
-	return loadfile_fs(filename,ncolumns,columns,data,LOADFILE_FS);
+loadfile(const char *filename, unsigned int ncolumns, unsigned int columns[], double *data[], int skipFirstRow) {
+   
+	return loadfile_fs(filename,ncolumns,columns,data,LOADFILE_FS,skipFirstRow);
 }
 
 
@@ -308,9 +326,9 @@ void add_next_level
 		SE_CLS_DRM_PROPERTY_TABLE,
 		SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION,
 		SE_CLS_DRM_PROPERTY_VALUE
+        
     };
     
-    printf("%f\n",fill_data[1][0]);
 	
     //n_lines = num_lines[0];
     
@@ -378,8 +396,10 @@ void add_next_level
 		
 		if ( level_type[level] == SE_CLS_DRM_PROPERTY_TABLE ) 
 		{
+            //Add irregular Axis
 			seDRMIrregularAxis irraxisObj;
 			SE_Short_Integer_Positive vc;
+            
 			
 			// Here I just made an array of sv
 			// SE_Single_Value sv[10];
@@ -418,9 +438,74 @@ void add_next_level
 			
 			
 			new_obj.addComponent(irraxisObj);
-		}
+            
+            
+            ///////// PROPERTY TABLE OF THE PROFILE ///////////
+            
+            seDRMPropertyTable ProfileTable;
+            transmittal.createObject(ProfileTable);
+            new_obj.addComponent(ProfileTable);
+            
+            
+            
+            SE_DRM_Class level_type2 = ProfileTable.getClassType();
+            seDRMClassificationData ClassData;
+
+            transmittal.createObject(ClassData);
+            ClassData.set_tag(ECC_PROPERTY_SET);
+                
+            //ProfileTable.addComponent(ClassData);
+            level_type2 = ClassData.getClassType();
+            
+        
+            
+            if(level_type2 == SE_CLS_DRM_CLASSIFICATION_DATA){
+            
+                
+                
+                seDRMPropertyValue pv2(ClassData);
+                
+                transmittal.createObject(pv2);
+                
+                SE_Property_Code elemType2;
+                EDCS_Attribute_Value av2;
+                
+                
+                elemType2.code_type = SE_PROPCODTYP_VARIABLE;
+                elemType2.code.variable = SE_VARCOD_REF_VEC_V0;
+                pv2.set_meaning(elemType2);
+                
+                // I pulled this working code from stf_test.cpp
+                // I think that it is important that all of these things are set.
+                av2.attribute_value_type = EDCS_AVT_REAL;
+                //av.value.real_value.unit_scale = ESC_UNI;
+                av2.value.real_value.numeric_value_type = EDCS_NVT_SINGLE_VALUE;
+                
+
+                av2.value.real_value.unit = EUC_KILOGRAM;
+                av2.value.real_value.unit_scale = ESC_YOTTA;//e24
+                av2.value.real_value.value.single_value = fill_data[1][1]*SM*1e-24;//YOTTA Kg
+            
+                pv2.set_value(av2);
+
+                }
+            
+               ProfileTable.addComponent(ClassData);
+            
+                //TABLE PROPERTY DESCRIPTIONS OF THE PROFILES
+                //seDRMTablePropertyDescription propDescObj2(new_obj);
+                
+                //ProfileTable.addComponent(propDescObj2);
+
+                
+            }
+            
+            
+		//}
+        
+        
 		
-		if (level_type[level] ==  SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION ) 
+		if (level_type[level] ==  SE_CLS_DRM_TABLE_PROPERTY_DESCRIPTION )
 		{
 			
 			propdescription_i=i;
@@ -931,7 +1016,7 @@ int main( int argc, char **argv )
         int k=0;
         
         file_name = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/history.data";
-        file_name2 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profileHeader100.data";
+        file_name2 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profile100_original.data";
         file_name3 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profile100.data";
        
         
@@ -939,30 +1024,34 @@ int main( int argc, char **argv )
         for (k=0;k<=2;k++) {
             
             if (k==0){
-                printf("%d\n",k);
-                nmesa_data[k]=loadfile(file_name,6,col,mesa_data[k]);  //return the lines number of the raw in each column
-                printf("Number of Raws = %d\n",nmesa_data[k]);
-                printf("second column first row \n");
-                printf("%f\n",mesa_data[0][1][0]);
+               // printf("%d\n",k);
+                
+               nmesa_data[k]=loadfile(file_name,6,col,mesa_data[k],0);  //return the lines number of the raw in each column
+               printf("Number of Raws = %d\n",nmesa_data[k]);
+               printf("second column first row \n");
+               printf("%f\n",mesa_data[0][1][0]);
             }
             if (k==1){
-                printf("%d\n",k);
-                nmesa_data[k]=loadfile(file_name2,10,col2,mesa_data[k]);  //return the lines number of the raw in each column
+                //printf("%d\n",k);
+                //Origianl profile file -> file_name3
+                nmesa_data[k]=loadfile(file_name2,10,col2,mesa_data[k],0);  //return the lines number of the raw in each column
+                nmesa_data[k]=1; // Take just the first row
                 printf("Second File \n");
                 printf("Number of Raws = %d\n",nmesa_data[k]);
                 printf("second column first row \n");
-                printf("%f\n",mesa_data[1][4][0]);
-                
+                printf("%f\n",mesa_data[1][1][0]);
             }
             
+            //Read all the file opening it and put inside the file_name3 the pointer of the file skipping the first row
+            
             if (k==2){
-                printf("%d\n",k);
-                nmesa_data[k]=loadfile(file_name3,13,col3,mesa_data[k]);  //return the lines number of the raw in each column
+                //printf("%d\n",k);
+                nmesa_data[k]=loadfile(file_name2,13,col3,mesa_data[k],1);  //return the lines number of the raw in each column
+                nmesa_data[k]= nmesa_data[k] - 1;
                 printf("Third File \n");
                 printf("Number of Raws = %d\n",nmesa_data[k]);
                 printf("second column first row \n");
-                printf("%f\n",mesa_data[2][12][0]);
-                
+                printf("%f\n",mesa_data[2][1][0]);
             }
         }
    
