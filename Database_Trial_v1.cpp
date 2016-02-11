@@ -72,8 +72,8 @@ double *data[5]; //double *data[NSTARMODELS][NCOLUMNS][Insert with Time] allocar
 //nines = loadfile("",data[i]); data[i][5] = (double *) malloc(nlines*sizeof(double));
 
 unsigned int col[]={1,2,34,35,40,41}; //Evolution Parameter of the STAR in function of time history.data
-unsigned int col2[]={1,3,4,5,6,18,22,23,24,25}; //Evolution Parameter of the STAR in function of the header of the Profile100.data
-unsigned int col3[]={1,3,6,26,29,36,62,67,71,72,73,74,75}; //Evolution Parameter of the STAR in function of time history.data
+unsigned int col2[]={1,3,4,5,6,18,22,23,24,25}; //Evolution Parameter of the STAR in function of the header of the profile100.data
+unsigned int col3[]={1,3,6,26,29,36,62,67,71,72,73,74,75}; //Evolution Parameter of the STAR in function of radius in profile100.data
 
 static int  nlines;
 static int nModels = 34; // Total numbers of models
@@ -1015,9 +1015,9 @@ int main( int argc, char **argv )
         FILE *f_plot;
         int k=0;
         
-        file_name = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/history.data";
-        file_name2 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profile100_original.data";
-        file_name3 = "/Volumes/Macintosh HD/sedris_cpp_sdk_4.1.4/src/apps/Database_Trial_v1/profile100.data";
+        file_name = "history.data";
+        file_name2 = "profile100_original.data";
+        file_name3 = "profile100.data";
        
         
         
@@ -1046,8 +1046,24 @@ int main( int argc, char **argv )
             
             if (k==2){
                 //printf("%d\n",k);
-                nmesa_data[k]=loadfile(file_name2,13,col3,mesa_data[k],1);  //return the lines number of the raw in each column
-                nmesa_data[k]= nmesa_data[k] - 1;
+	      FILE *in;
+	      int skip;
+	      char buffer[MAXLINESIZE];
+	      if (1) {
+		printf("Hello\n");
+		// skip the first four lines
+		in=fopen(file_name2,"r");
+		for (skip=0;skip<7;skip++) {
+		  fgets(buffer,MAXLINESIZE-1,in);
+		  printf("%s",buffer);
+		}
+	        nmesa_data[k]=loadfile_fileptr(in,13,col3,mesa_data[k],0);  //return the lines number of the raw in each column
+		fclose(in);
+	      } else {
+		nmesa_data[k]=loadfile(file_name2,13,col3,mesa_data[k],1);  //return the lines number of the raw in each column
+
+	      }
+	      //                Nmesa_data[k]= nmesa_data[k] - 1;
                 printf("Third File \n");
                 printf("Number of Raws = %d\n",nmesa_data[k]);
                 printf("second column first row \n");
